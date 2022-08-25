@@ -28,20 +28,33 @@
             <textarea id="failure_url" type="text" placeholder="" v-model="failureUrl" rows="2" />
         </div>
 
+        <div class="card__checkbox">
+            <AppCheckbox
+                v-model="includeOrderId"
+                label="Добавить номер заказа после успешной оплаты"
+                :value="false"
+            />
+        </div>
+
         <AppButton block @click="handlePay">Оплатить</AppButton>
     </div>
 </template>
 
 <script>
+// Library
+import ChocoPayWidget from "choco-pay-widget";
+
+// Components
 import UiRadio from "@/components/RadioButton";
 import AppButton from "@/components/AppButton";
-import ChocoPayWidget from "choco-pay-widget";
+import AppCheckbox from "@/components/AppCheckbox";
 
 export default {
     name: "AppMain",
     components: {
         UiRadio,
         AppButton,
+        AppCheckbox,
     },
     data() {
         return {
@@ -50,6 +63,7 @@ export default {
             environment: "stage",
             successUrl: "https://chocopay-widget-demo.web.app/success",
             failureUrl: "https://chocopay-widget-demo.web.app/error",
+            includeOrderId: false,
         };
     },
     methods: {
@@ -60,6 +74,7 @@ export default {
                 environment: this.environment,
                 sucessUrl: this.successUrl,
                 failureUrl: this.failureUrl,
+                includeOrderId: this.includeOrderId,
             });
 
             ChocoPayWidgetItem.initPayment();
